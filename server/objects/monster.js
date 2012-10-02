@@ -5,6 +5,7 @@ var Monster = function() {
 	this.hit_by_last = null;
 	this.idle = true;
 	this.pos = {x: 0, y:0};
+    this.last_move = new Date();
 
 	this.init = function(x, y, world, id) {
 		this.world = world;
@@ -16,8 +17,17 @@ var Monster = function() {
 
 	this.on_idle = function() {};
 	this.on_hit = function(player) {};
+    
 	this.update = function() {
-		
+		if(Date.now() - this.last_move > 1000) {
+            console.log("Ai Moving..");
+            this.last_move = Date.now();
+            this.pathing();
+        }
 	};
+    
+    this.pathing = function() {
+        
+    };
 };
 modules.export = Monster;

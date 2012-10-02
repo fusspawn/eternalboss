@@ -5,7 +5,7 @@
     "underscore": "latest",
     "socket.io": "latest",
     "express": "latest",
-    "typescript": "latest",
+    "typescript": "latest"
   },
   "engines": {
     "node": "0.8.8",

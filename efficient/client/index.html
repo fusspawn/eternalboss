@@ -1,24 +1,63 @@
 <html> 
     <head> 
     </head>
-    <body>
+    <body style="background:lightgrey">
         <center>
-            <canvas id="mainwindow" width="600px" height="400px"> </canvas>
+            <div id="fps_display" style="color:white;"> FPS: 0 </div>
+            <canvas id="mainwindow" width="600px" height="400px" style="border:1px solid"> </canvas>
         <center>
-        <script src="./scripts/resource_loader.js" type="text/javascript"> </script>
-        <script src="./scripts/renderer.js" type="text/javascript"> </script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"> </script>
+        <script src="./scripts/core/shim.js" type="text/javascript"> </script>
+        <script src="./scripts/core/resource_loader.js" type="text/javascript"> </script>
+        <script src="./scripts/core/renderer.js" type="text/javascript"> </script>
+        <script src="./scripts/core/timer.js" type="text/javascript"> </script>
+        <script src="./scripts/core/scene.js" type="text/javascript"> </script>
+        <script src="./scripts/core/sprite.js" type="text/javascript"> </script>
+        <script src="./scripts/core/input.js" type="text/javascript"> </script>
+        <script src="./scripts/core/player.js" type="text/javascript"> </script>
+        <script src="./scripts/physics/physics.js" type="text/javascript"> </script>
+        
+        <script src="./scripts/core/spritesheet.js" type="text/javascript"> </script>
+        <script src="./scripts/core/worldmap.js" type="text/javascript"> </script>
+        <script src="./scripts/core/tiledmap.js" type="text/javascript"> </script>
+        <script src="./scripts/core/camera.js" type="text/javascript"> </script>
+        <script src="./scripts/core/dat.gui.min.js" type="text/javascript"> </script>
+        
+        
+        <script src="./scripts/game/mainplayer.js" type="text/javascript"> </script>
+        
         
         <script type="text/javascript"> 
               client_data = {};
+              client_data.gui = new dat.GUI();
               client_data.resources = new ResourceLoader(client_data);
               client_data.renderer = new Renderer("mainwindow", client_data);
-              client_data.renderer.clear(false);
+               
+              client_data.input = new Input();
+              client_data.timer = new TimerManager();
+              client_data.timer.update_fps = false;
+              client_data.scene = new Scene();
+              client_data.physics = new Physics();
               
-              client_data.renderer.create_canvas_buffer("./uparrow.jpg", function(buffer) {
-                    client_data.renderer.draw_buffer(buffer, 0, 0);
-              });
+              client_data.test_map = new TiledMap("./data/map_test.json");
+              client_data.renderer.main_camera = new Camera();
+              client_data.renderer.background_color = "blue";
               
-              console.log("Done..");
+              client_data.mainplayer = new MainPlayer();
+              client_data.mainplayer.move(50, 100);
+              
+              
+              
+              client_data.renderer.main_camera.follow = client_data.mainplayer;
+             
+              client_data.timer.push_frame_func(function(delta) {
+                    this.update_scene(delta);
+                    client_data.renderer.clear(false);
+                    this.draw_scene(delta);
+              }, client_data.scene);
+              
+              client_data.timer.start_loop();
         </script>
     </body>
 </html>

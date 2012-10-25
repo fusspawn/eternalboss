@@ -17,5 +17,5 @@ function Sprite(image_url, x, y) {
         
     }
     
-    this.draw = function(delta) {  client_data.renderer.draw_buffer(this.image, this.x, this.y); }
+    this.draw = function(delta) {  client_data.renderer.draw_buffer(this.image, this.x, this.y); } //
 }
